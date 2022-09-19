@@ -8,6 +8,7 @@ from .views import (
      student_list,
      student_create,
      student_detail,
+     student_update,
 )
 
 urlpatterns = [
@@ -18,6 +19,7 @@ urlpatterns = [
     path('student_list/', student_list, name='student_list'),
     path('student_create/', student_create, name='student_create'),
     path('student_detail/<int:pk>/', student_detail, name = "student_detail"),
+    path('student_update/<int:pk>/', student_update, name = "student_update"),
     
 
 ]
