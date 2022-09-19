@@ -123,6 +123,18 @@ def student_update_partial(request, pk):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['DELETE'])
+def student_delete(request, pk):
+    student=get_object_or_404(Student, pk=pk)
+    student.delete()
+    data = {
+            "message": f"Student {student.last_name} deleted successfully"
+    }
+    return Response(data, status=status.HTTP_200_OK)
+
+
+
+
 
 
 
