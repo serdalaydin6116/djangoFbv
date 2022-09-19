@@ -33,8 +33,8 @@ def student_api(request):
 
 @api_view(['GET'])
 def student_list(request):
-    # students=Student.objects.all()
-    students=Student.objects.filter(path=2)
+    students=Student.objects.all()
+    # students=Student.objects.filter(path=2)
     serializer=StudentSerializer(students, many=True)
     print(serializer.data)
     return Response(serializer.data)
@@ -93,6 +93,22 @@ def student_detail(request, pk):
     student=get_object_or_404(Student, pk=pk)
     serializer=StudentSerializer(student) 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(['PUT'])
+def student_update(request, pk):
+    student=get_object_or_404(Student, pk=pk)
+    serializer=StudentSerializer(student, data=request.data) 
+    if serializer.is_valid():
+        serializer.save()
+        data = {
+                "message": f"Student {student.last_name} updated successfully"
+            }
+        return Response(data)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
