@@ -31,6 +31,31 @@ def student_api(request):
             return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def student_list(request):
+    # students=Student.objects.all()
+    students=Student.objects.filter(path=2)
+    serializer=StudentSerializer(students, many=True)
+    print(serializer.data)
+    return Response(serializer.data)
+
+
+
+@api_view(['POST'])
+def student_create(request):
+    # print(request.data)
+    serializer=StudentSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        data={
+            "message" : f"Student {serializer.validated_data.get('first_name')} was created succesfully"
+        }
+        return Response(data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors)
+
+
+
+
 @api_view(['GET', 'PUT', 'DELETE', 'PATCH'])
 def student_api_get_update_delete(request, pk):
     student = get_object_or_404(Student, pk=pk)
@@ -61,6 +86,24 @@ def student_api_get_update_delete(request, pk):
             "message": f"Student {student.last_name} deleted successfully"
         }
         return Response(data)
+
+
+@api_view(['GET'])
+def student_detail(request, pk):
+    student=get_object_or_404(Student, pk=pk)
+    serializer=StudentSerializer(student) 
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+
+
+
 @api_view(['GET', 'POST'])
 def path_api(request):
     # from rest_framework.decorators import api_view
